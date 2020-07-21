@@ -1,0 +1,120 @@
+{% extends 'sound_ml/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-5">
+<div class="container">
+<center>
+  <h1>Speech To Text Prediction!</h1>
+  <p> <h3>Choose An Audio File To Predict</h3><br>
+    The model is trained on the following words - <b>"Down","Go","Left","No","Off","On","Right","Stop","Up","Yes".<br></b>
+    Upload an audio clip of you saying any of the above words or choose one from the following. The audio clip should be of 1 second long and not less.</p>
+    <p>  <a href = "https://github.com/rajatkeshri/Speech2text-Tensorflow" class="btn btn-primary">
+    Github Link </a>
+  </p>
+      {% if is_none == 1 %}
+      <h3>No File Uploaded or no option selected</h3> <br>
+      {% elif predicted_True ==  1 %}
+      <h3>Predicted word :</h3> <h1><font color="blue"> {{ predicted_keyword }} </font></h1> <br><h3>Scroll Down for prediction table!</h3> <br>
+      {% endif %}
+  <h5> (Please wait for 5 - 10 seconds for the model to predict)</h5>
+  <br><br>
+
+
+<form method="post" action="speech2text" enctype="multipart/form-data">
+   {% csrf_token %}
+   <input  type="file" name="myfile" id="img" />
+   <!--<input type="file" name="uploadfile" id="img" style="display:none;"/>
+   <label for="img">Click me to upload image</label>-->
+   <button class="btn btn-success" type="submit">Predict </button>
+
+ </form>
+
+<br>
+<h1><b> (OR)</b></h1>
+<br>
+ <form method="post" action="speech2text" >
+    {% csrf_token %}
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="text-align:center">Selection</th>
+          <th scope="col" style="text-align:center">Word</th>
+          <th scope="col" style="text-align:center">Audio</th>
+          <th scopt="col" style="text-align:center"> <button class="btn btn-success" type="submit">Predict </button> </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key,val in test_files_dic.items %}
+        <tr>
+          <th scope="row"><input  type="radio" name="{{ key }}" id ="radio" /></th>
+          <td> <label for="down">{{ key }} </label></td>
+          <td> <audio controls><source src="{{ val }}" type="audio/ogg"></audio><br></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</form>
+</center>
+</div>
+
+<br>
+<br>
+
+ {% if predicted_True == 2 %}
+ <center>
+ <p> Failed due to any of one - <br>
+   1) File not more than 1 second long
+   2) File not .wav format</p>
+   </center>
+   <div style="height: 390px"></div>
+ {% elif predicted_True == 1 %}
+<div class= container>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Output Word</th>
+      <th scope="col">Prediction in Percentage</th>
+      <th scope="col">Highest score</th>
+    </tr>
+  </thead>
+  {% if predicted_True == 1 %}
+  <tbody>
+    {% for keys,values in mappings.items %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      {% if forloop.counter == highest %}
+      <td style="font-weight:bold">{{ keys }}</td>
+      <td style="font-weight:bold" >{{ values }}%</td>
+      <td> <i class="fa fa-check"></i> </td>
+      {% else %}
+      <td>{{ keys }}</td>
+      <td>{{ values }}%</td>
+      <td></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+</div>
+<div style="height: 200px"></div>
+{% else %}
+<center>
+<!--<p> <b>Please Upload a file for the model to predict</b></p>-->
+</center>
+<br><br>
+<div style="height: 440px"></div>
+{% endif %}
+
+</div>
+</div>
+</div>
+{% endblock %}

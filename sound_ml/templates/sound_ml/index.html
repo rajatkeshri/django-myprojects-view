@@ -1,0 +1,36 @@
+{% extends 'sound_ml/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<header>
+  <div class="overlay"></div>
+  <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+    <!--<source src="static/sound_ml/tech2.mp4" type="video/mp4">-->
+  </video>
+  <div class="container h-100">
+    <div class="d-flex h-100 text-center align-items-center">
+      <div class="w-100 text-white">
+        <h1 class="display-3">Coding ML</h1>
+        <p class="lead mb-0">One stop place for all my machine learning projects</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
+
+<section class="pricing py-5">
+  <div class="container">
+  <center>
+    <h1><font color="white"> All Projects</font></h1>
+    <hr>
+    <br>
+  <a href="speech2text" class="btn btn-primary" id="navbarstyle">Speech To Text Conversion </a>
+&nbsp  <a href="musicgenre" class="btn btn-primary" id="navbarstyle"> Music Genre Classification </a>
+  </center>
+  </div>
+</section>
+
+{% endblock %}

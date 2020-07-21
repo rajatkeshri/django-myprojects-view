@@ -1,0 +1,70 @@
+{% extends 'sound_ml/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-5">
+<br>
+
+<center>
+  <div class ="container">
+    <h1> What Genre is this song??</h1> <br>
+    <p>  <a href = "https://github.com/rajatkeshri/Music-Genre-Prediction-Using-RNN-LSTM" class="btn btn-primary">
+    Github Link </a>
+  </p>
+  {% if prediction != "none" %}
+    <h3>Predicted outcome : </h3><h1><font color="blue"> {{ prediction }} </font></h1>
+    {% elif is_none == 1 %}
+    <h3>No File Uploaded or no option selected</h3> <br>
+    {% else %}
+    <h3>Upload a song or choose on from the table below</h3> <br>
+    {% endif %}
+    <h5> (Please wait for 5 - 10 seconds for the model to predict)</h5>
+    <br>
+
+<form method="post" action="musicgenre" enctype="multipart/form-data">
+   {% csrf_token %}
+   <input  type="file" name="myfile" id="img" />
+   <!--<input type="file" name="uploadfile" id="img" style="display:none;"/>
+   <label for="img">Click me to upload image</label>-->
+   <button class="btn btn-danger" type="submit">Predict</button>
+ </form>
+
+
+
+ <br>
+ <h1><b> (OR)</b></h1>
+ <br>
+  <form method="post" action="musicgenre" >
+     {% csrf_token %}
+     <table class="table">
+       <thead class="thead-dark">
+         <tr>
+           <th scope="col" style="text-align:center">Selection</th>
+           <th scope="col" style="text-align:center">Word</th>
+           <th scope="col" style="text-align:center">Audio</th>
+           <th scopt="col" style="text-align:center"> <button class="btn btn-danger " type="submit">Predict </button> </th>
+         </tr>
+       </thead>
+       <tbody>
+         {% for key,val in test_files_dic.items %}
+         <tr>
+           <th scope="row"><input  type="radio" name="{{ key }}" id ="radio" /></th>
+           <td> <label for="down">{{ key }} </label></td>
+           <td> <audio controls><source src="{{ val }}" type="audio/ogg"></audio><br></td>
+
+         </tr>
+         {% endfor %}
+       </tbody>
+     </table>
+ </form>
+ </div>
+ </center>
+
+  </div>
+   </div>
+    </div>
+{% endblock %}
